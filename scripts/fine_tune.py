@@ -432,15 +432,18 @@ class ModelFineTuner:
             ollama_dir.mkdir(parents=True, exist_ok=True)
             
             # Create Modelfile
+            template_content = '{{"prompt": "### Instruction:\\n{{.Input}}\\n\\n### Response:\\n", "response": "{{.Response}}\\n\\n### End\\n"}}'
+            system_content = "You are a helpful AI assistant trained on multi-modal document data. You can analyze text, images, and tables from documents."
+            
             modelfile_content = f"""FROM {model_path}
-TEMPLATE """{{"prompt": "### Instruction:\\n{{.Input}}\\n\\n### Response:\\n", "response": "{{.Response}}\\n\\n### End\\n"}}"""
+TEMPLATE {template_content}
 PARAMETER temperature 0.7
 PARAMETER top_p 0.9
 PARAMETER top_k 40
 PARAMETER repeat_penalty 1.1
 PARAMETER stop "### End"
 PARAMETER stop "### Instruction:"
-SYSTEM """You are a helpful AI assistant trained on multi-modal document data. You can analyze text, images, and tables from documents."""
+SYSTEM {system_content}
 """
             
             modelfile_path = ollama_dir / "Modelfile"

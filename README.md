@@ -82,8 +82,8 @@ git clone <your-repo-url>
 cd fine-tuning-pipeline
 
 # Create virtual environment
-python3 -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+python3 -m venv ft-rag
+source ft-rag/bin/activate  # On Windows: ft-rag\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt

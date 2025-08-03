@@ -22,7 +22,8 @@ opencv-python
 # Embeddings and models
 transformers
 sentence-transformers
-torch  # Use pip install torch --index-url https://download.pytorch.org/whl/nightly/cu121 for latest CUDA nightly
+# Note: torch is installed separately via install.sh with CUDA 12 nightly build
+# torch  # Use pip install torch --index-url https://download.pytorch.org/whl/nightly/cu12* for latest CUDA nightly
 torchvision
 
 # Vector DB and PostgreSQL
@@ -46,6 +47,10 @@ sqlalchemy
 
 # Optional: For HuggingFace model downloads
 huggingface-hub
+
+# For fine-tuning and evaluation
+datasets
+evaluate
 
 # For logging and testing
 pytest
