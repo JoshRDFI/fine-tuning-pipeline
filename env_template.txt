@@ -1,0 +1,19 @@
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=multimodal_rag
+DB_USER=postgres
+DB_PASSWORD=your_password_here
+
+# Model Configuration
+BASE_MODEL=qwen3
+USE_GPU=true
+
+# Training Configuration
+EPOCHS=3
+BATCH_SIZE=4
+LEARNING_RATE=2e-5
+MAX_LENGTH=512
+
+# System Configuration
+LOG_LEVEL=INFO 

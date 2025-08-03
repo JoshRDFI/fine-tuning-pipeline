@@ -1,0 +1,25 @@
+{
+  "input_dir": "data",
+  "extracted_assets_dir": "pipeline_output/extracted_assets",
+  "training_data_dir": "pipeline_output/training_data",
+  "fine_tuned_models_dir": "pipeline_output/fine_tuned_models",
+  "database_config": {
+    "host": "localhost",
+    "port": "5432",
+    "database": "multimodal_rag",
+    "user": "postgres",
+    "password": ""
+  },
+  "base_model": "llama2",
+  "epochs": 3,
+  "batch_size": 4,
+  "learning_rate": 2e-5,
+  "use_gpu": true,
+  "include_subdirs": true,
+  "output_format": "jsonl",
+  "max_length": 512,
+  "gradient_accumulation_steps": 4,
+  "save_steps": 500,
+  "eval_steps": 500,
+  "warmup_steps": 100
+} 
