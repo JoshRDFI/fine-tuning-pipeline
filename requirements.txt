@@ -1,0 +1,52 @@
+# Core Python
+python-dotenv
+tqdm
+
+# PDF and document processing
+pymupdf
+pdfplumber
+pillow
+pytesseract
+pdf2image
+
+# Table extraction
+camelot-py[cv]
+tabula-py
+
+# OCR (ensure Tesseract is installed on your system)
+pytesseract
+
+# Image processing
+opencv-python
+
+# Embeddings and models
+transformers
+sentence-transformers
+torch  # Use pip install torch --index-url https://download.pytorch.org/whl/nightly/cu121 for latest CUDA nightly
+torchvision
+
+# Vector DB and PostgreSQL
+psycopg2-binary
+pgvector
+
+# Data handling
+pandas
+numpy
+
+# Streamlit UI
+streamlit
+streamlit-chat
+
+# LLM/RAG orchestration
+llama-index
+langchain
+
+# For RLHF and feedback
+sqlalchemy
+
+# Optional: For HuggingFace model downloads
+huggingface-hub
+
+# For logging and testing
+pytest
+loguru
