@@ -5,6 +5,10 @@
 
 set -e  # Exit on any error
 
+# Store the project root directory
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$PROJECT_ROOT"
+
 echo "🚀 Starting installation of Multi-Modal RAG and Fine-tuning Pipeline..."
 echo "================================================================"
 
@@ -54,13 +58,15 @@ sudo apt install -y postgresql postgresql-contrib
 
 # Install pgvector extension
 echo "Setting up pgvector extension..."
-# Add pgvector repository and install the extension
-sudo add-apt-repository ppa:pgvector/stable -y
-sudo apt update
-# Detect PostgreSQL version and install corresponding pgvector package
-PG_VERSION=$(psql --version | grep -oP '\d+' | head -1)
-echo "Detected PostgreSQL version: $PG_VERSION"
-sudo apt install -y postgresql-$PG_VERSION-pgvector
+# Install pgvector from the official repository
+sudo apt install -y postgresql-server-dev-all build-essential git
+cd /tmp
+git clone --branch v0.5.1 https://github.com/pgvector/pgvector.git
+cd pgvector
+make
+sudo make install
+cd "$PROJECT_ROOT"
+rm -rf /tmp/pgvector
 
 echo "✅ System dependencies installed successfully!"
 
@@ -68,7 +74,7 @@ echo "✅ System dependencies installed successfully!"
 echo ""
 echo "🔥 Installing PyTorch nightly build for CUDA 12..."
 echo "------------------------------------------------"
-pip install torch --index-url https://download.pytorch.org/whl/nightly/cu12*
+pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu126
 
 # 4. Install project requirements
 echo ""
@@ -163,11 +169,21 @@ echo ""
 echo "🎉 Installation and setup completed successfully!"
 echo "==============================================="
 echo ""
+echo "⚠️  IMPORTANT: You need to activate the virtual environment before running any scripts!"
+echo ""
 echo "📋 Next steps:"
-echo "1. Place your PDF files in the 'data' directory"
-echo "2. Run the pipeline: python run_pipeline.py"
-echo "3. Or run individual phases: python run_pipeline.py --phase 1"
-echo "4. Launch Streamlit UI: streamlit run scripts/streamlit_app.py"
+echo "1. Activate virtual environment: source ft-rag/bin/activate"
+echo "2. Place your PDF files in the 'data' directory"
+echo "3. Run the pipeline: python run_pipeline.py"
+echo "4. Or run individual phases: python run_pipeline.py --phase 1"
+echo "5. Launch Streamlit UI: streamlit run scripts/streamlit_app.py"
+echo ""
+echo "💡 Quick start:"
+echo "   source ft-rag/bin/activate && python run_pipeline.py --phase 1"
+echo ""
+echo "🔧 Ollama setup (for model serving):"
+echo "   curl -fsSL https://ollama.ai/install.sh | sh"
+echo "   ollama serve"
 echo ""
 echo "📖 For detailed instructions, see README.md"
 echo "🐛 For troubleshooting, check the logs directory"

@@ -12,6 +12,10 @@ __pycache__/
 *.pyw
 *.pyz
 ft-rag/
+data/
+pipline_output/
+extracted_assets/
+
 
 # User-specific files
 *.rsuser

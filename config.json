@@ -7,19 +7,13 @@
     "host": "localhost",
     "port": "5432",
     "database": "multimodal_rag",
-    "user": "postgres",
-    "password": ""
+    "user": "multimodal_user",
+    "password": "password"
   },
-  "base_model": "llama2",
-  "epochs": 3,
+  "base_model": "qwen3",
+  "epochs": 6,
   "batch_size": 4,
-  "learning_rate": 2e-5,
+  "learning_rate": 2e-05,
   "use_gpu": true,
-  "include_subdirs": true,
-  "output_format": "jsonl",
-  "max_length": 512,
-  "gradient_accumulation_steps": 4,
-  "save_steps": 500,
-  "eval_steps": 500,
-  "warmup_steps": 100
-} 
+  "output_format": "jsonl"
+}

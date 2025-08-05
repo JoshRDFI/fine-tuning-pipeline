@@ -23,7 +23,7 @@ opencv-python
 transformers
 sentence-transformers
 # Note: torch is installed separately via install.sh with CUDA 12 nightly build
-# torch  # Use pip install torch --index-url https://download.pytorch.org/whl/nightly/cu12* for latest CUDA nightly
+# torch  # Use pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu126 for latest CUDA nightly
 torchvision
 
 # Vector DB and PostgreSQL
@@ -55,3 +55,6 @@ evaluate
 # For logging and testing
 pytest
 loguru
+
+# For system monitoring
+psutil

@@ -91,15 +91,39 @@ def create_postgresql_database(dbname, username):
             print(f"❌ Failed to create database '{dbname}': {stderr}")
             return False
     
-    # Grant privileges
-    grant_cmd = f"sudo -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE {dbname} TO {username};\""
-    returncode, stdout, stderr = run_command(grant_cmd, capture_output=True)
+    # Grant database privileges
+    grant_db_cmd = f"sudo -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE {dbname} TO {username};\""
+    returncode, stdout, stderr = run_command(grant_db_cmd, capture_output=True)
     
     if returncode != 0:
-        print(f"❌ Failed to grant privileges: {stderr}")
+        print(f"❌ Failed to grant database privileges: {stderr}")
         return False
     
-    print(f"✅ Database '{dbname}' created and privileges granted")
+    # Grant schema privileges
+    grant_schema_cmd = f"sudo -u postgres psql -d {dbname} -c \"GRANT ALL ON SCHEMA public TO {username};\""
+    returncode, stdout, stderr = run_command(grant_schema_cmd, capture_output=True)
+    
+    if returncode != 0:
+        print(f"❌ Failed to grant schema privileges: {stderr}")
+        return False
+    
+    # Grant usage on schema
+    grant_usage_cmd = f"sudo -u postgres psql -d {dbname} -c \"GRANT USAGE ON SCHEMA public TO {username};\""
+    returncode, stdout, stderr = run_command(grant_usage_cmd, capture_output=True)
+    
+    if returncode != 0:
+        print(f"❌ Failed to grant usage privileges: {stderr}")
+        return False
+    
+    # Grant create privileges
+    grant_create_cmd = f"sudo -u postgres psql -d {dbname} -c \"GRANT CREATE ON SCHEMA public TO {username};\""
+    returncode, stdout, stderr = run_command(grant_create_cmd, capture_output=True)
+    
+    if returncode != 0:
+        print(f"❌ Failed to grant create privileges: {stderr}")
+        return False
+    
+    print(f"✅ Database '{dbname}' created and all privileges granted")
     return True
 
 def setup_pgvector_extension(dbname):

@@ -348,12 +348,26 @@ class PDFExtractor:
                 if images:
                     references.append("\n## Extracted Images\n")
                     for img in images:
-                        references.append(f"![{img.stem}]({img.relative_to(text_dir)})\n")
+                        # Create relative path from text directory to image
+                        try:
+                            # Try to create relative path
+                            rel_path = img.relative_to(text_dir.parent)
+                            references.append(f"![{img.stem}](../{rel_path})\n")
+                        except ValueError:
+                            # If that fails, use absolute path
+                            references.append(f"![{img.stem}]({img})\n")
                 
                 if tables:
                     references.append("\n## Extracted Tables\n")
                     for table in tables:
-                        references.append(f"[Table: {table.stem}]({table.relative_to(text_dir)})\n")
+                        # Create relative path from text directory to table
+                        try:
+                            # Try to create relative path
+                            rel_path = table.relative_to(text_dir.parent)
+                            references.append(f"[Table: {table.stem}](../{rel_path})\n")
+                        except ValueError:
+                            # If that fails, use absolute path
+                            references.append(f"[Table: {table.stem}]({table})\n")
                 
                 if references:
                     with open(text_file, 'a', encoding='utf-8') as f:

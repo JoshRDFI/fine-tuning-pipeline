@@ -57,6 +57,8 @@ class StreamlitApp:
             st.session_state.current_model = None
         if 'rag_pipeline' not in st.session_state:
             st.session_state.rag_pipeline = None
+        if 'current_page' not in st.session_state:
+            st.session_state.current_page = "🏠 Home"
             
     def main(self):
         """Main application"""
@@ -69,17 +71,27 @@ class StreamlitApp:
             ["🏠 Home", "💬 Chat", "📁 File Upload", "🔧 Training", "📊 Database", "⚙️ Settings"]
         )
         
-        if page == "🏠 Home":
+        # Update session state if sidebar selection changed
+        if page != st.session_state.current_page:
+            st.session_state.current_page = page
+        
+        # Route to appropriate page
+        current_page = st.session_state.current_page
+        
+        # Debug: Show current page
+        st.sidebar.write(f"Current page: {current_page}")
+        
+        if current_page == "🏠 Home":
             self.home_page()
-        elif page == "💬 Chat":
+        elif current_page == "💬 Chat":
             self.chat_page()
-        elif page == "📁 File Upload":
+        elif current_page == "📁 File Upload":
             self.file_upload_page()
-        elif page == "🔧 Training":
+        elif current_page == "🔧 Training":
             self.training_page()
-        elif page == "📊 Database":
+        elif current_page == "📊 Database":
             self.database_page()
-        elif page == "⚙️ Settings":
+        elif current_page == "⚙️ Settings":
             self.settings_page()
             
     def home_page(self):
@@ -128,15 +140,15 @@ class StreamlitApp:
         
         with col1:
             if st.button("🚀 Start New Pipeline", use_container_width=True):
-                st.switch_page("📁 File Upload")
+                st.session_state.current_page = "📁 File Upload"
                 
         with col2:
             if st.button("💬 Open Chat", use_container_width=True):
-                st.switch_page("💬 Chat")
+                st.session_state.current_page = "💬 Chat"
                 
         with col3:
             if st.button("🔧 Training Dashboard", use_container_width=True):
-                st.switch_page("🔧 Training")
+                st.session_state.current_page = "🔧 Training"
                 
     def chat_page(self):
         """Chat interface with RAG pipeline"""
@@ -609,9 +621,13 @@ class StreamlitApp:
         """Check available storage space"""
         try:
             import psutil
-            disk_usage = psutil.disk_usage('/')
+            # Check current working directory or M drive
+            import os
+            current_dir = os.getcwd()
+            disk_usage = psutil.disk_usage(current_dir)
             return disk_usage.free > 1e9  # 1GB free
-        except:
+        except Exception as e:
+            st.error(f"Storage check error: {str(e)}")
             return False
 
 def main():

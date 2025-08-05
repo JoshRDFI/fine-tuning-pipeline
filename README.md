@@ -74,19 +74,52 @@ fine-tuning-pipeline/
 
 ## Quick Start
 
+### Option 1: Automated Installation (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/JoshRDFI/fine-tuning-pipeline
+cd fine-tuning-pipeline
+
+# Run the automated installation script
+chmod +x install.sh
+./install.sh
+```
+
+This will automatically:
+- Create the virtual environment (`ft-rag`)
+- Install all system dependencies (Tesseract, Poppler, PostgreSQL, pgvector)
+- Install PyTorch nightly build for CUDA 12
+- Install all Python dependencies
+- Run interactive setup for database configuration
+- Create necessary directories
+
+**Note:** After installation, you'll need to activate the virtual environment before running any scripts:
+```bash
+source ft-rag/bin/activate
+```
+
+**Important:** You'll also need to install and start Ollama separately for model serving:
+```bash
+# Install Ollama (if not already installed)
+curl -fsSL https://ollama.ai/install.sh | sh
+
+# Start Ollama service
+ollama serve
+```
+
+### Option 2: Manual Installation
+
 ### 1. Setup Environment
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/JoshRDFI/fine-tuning-pipeline
 cd fine-tuning-pipeline
 
 # Create virtual environment
 python3 -m venv ft-rag
 source ft-rag/bin/activate  # On Windows: ft-rag\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
 ```
 
 ### 2. Install System Dependencies
@@ -102,7 +135,14 @@ sudo apt install poppler-utils
 
 # Install PostgreSQL and pgvector
 sudo apt install postgresql postgresql-contrib
-# Follow pgvector installation: https://github.com/pgvector/pgvector#installation
+sudo apt install postgresql-server-dev-all build-essential git
+cd /tmp
+git clone --branch v0.5.1 https://github.com/pgvector/pgvector.git
+cd pgvector
+make
+sudo make install
+cd -
+rm -rf /tmp/pgvector
 ```
 
 **Windows:**
@@ -110,17 +150,28 @@ sudo apt install postgresql postgresql-contrib
 - Install Poppler from: http://blog.alivate.com.au/poppler-windows/
 - Install PostgreSQL from: https://www.postgresql.org/download/windows/
 
-### 3. Configure Database
+### 3. Install Python Dependencies
 
 ```bash
-# Copy environment template
-cp env_template.txt .env
+# Make sure virtual environment is activated
+source ft-rag/bin/activate  # On Windows: ft-rag\Scripts\activate
 
-# Edit .env with your database credentials
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### 4. Configure Database
+
+```bash
+# Run interactive setup (recommended)
+python setup_interactive.py
+
+# Or manually copy and edit environment template
+cp env_template.txt .env
 nano .env
 ```
 
-### 4. Run the Pipeline
+### 5. Run the Pipeline
 
 **Option 1: Complete Pipeline**
 ```bash

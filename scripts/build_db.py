@@ -59,6 +59,10 @@ class DatabaseBuilder:
             self.connection.close()
             self.logger.info("Database connection closed")
             
+    def disconnect_from_database(self):
+        """Alias for disconnect method for consistency"""
+        self.disconnect()
+            
     def create_schema(self):
         """Create database schema based on sample_schema.sql"""
         try:
